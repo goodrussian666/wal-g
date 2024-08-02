@@ -10,6 +10,8 @@ env:
   USE_BROTLI: 1
   USE_LIBSODIUM: 1
   USE_LZO: 1
+  GOOS: windows
+  GOARCH: amd64
 
 jobs:
   release-ubuntu:
