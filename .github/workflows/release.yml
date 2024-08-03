@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install deps
-        if: matrix.os == 'ubuntu-20.04'
+        if: startsWith(matrix.os, 'ubuntu-')
         run: sudo apt-get install liblzo2-dev brotli libsodium-dev
 
       - name: Checkout code
