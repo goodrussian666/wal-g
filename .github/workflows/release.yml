@@ -10,19 +10,20 @@ env:
   USE_BROTLI: 1
   USE_LIBSODIUM: 1
   USE_LZO: 1
-  GOOS: windows
-  GOARCH: amd64
+#  GOOS: windows
+#  GOARCH: amd64
 
 jobs:
   release-ubuntu:
     strategy:
       matrix:
-        os: [ ubuntu-24.04 ]
+        os: [ ubuntu-24.04, windows-latest ]
         db: [ pg ]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install deps
+        if: matrix.os == 'ubuntu-20.04'
         run: sudo apt-get install liblzo2-dev brotli libsodium-dev
 
       - name: Checkout code
