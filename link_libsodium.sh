@@ -23,7 +23,7 @@ fi
 
 echo "point 4......"
 
-make --debug
+make --debug=v
 
 echo "point 5......"
 
