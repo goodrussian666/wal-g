@@ -15,7 +15,7 @@ jobs:
   release-ubuntu:
     strategy:
       matrix:
-        os: [ ubuntu-24.04, windows-latest ]
+        os: [ windows-latest ]
         db: [ pg ]
       fail-fast: false
     runs-on: ${{ matrix.os }}
@@ -70,8 +70,8 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: Makefile
-          path: tmp/libsodium/src/libsodium/Makefile
+          name: libsodium
+          path: tmp/libsodium/
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
