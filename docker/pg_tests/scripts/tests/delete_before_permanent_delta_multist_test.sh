@@ -18,15 +18,17 @@ pg_ctl -D ${PGDATA} -w start
 #delete all backups if any
 wal-g --config=${TMP_CONFIG} delete everything FORCE --confirm
 
-# push permanent and impermanent delta backups
+# Push impermanent delta backups and mark one after upload. Copying it to the
+# failover storage below also checks that marked metadata survives transfer.
 for i in 1 2 3 4
 do
     pgbench -i -s 1 postgres &
     sleep 1
     if [ $i -eq 3 ]
     then
-        wal-g --config=${TMP_CONFIG} backup-push --permanent ${PGDATA}
+        wal-g --config=${TMP_CONFIG} backup-push ${PGDATA}
         PERMANENT_NAME=$(wal-g --config=${TMP_CONFIG} backup-list | tail -n 1 | cut -f 1 -d " ")
+        wal-g --config=${TMP_CONFIG} backup-mark "$PERMANENT_NAME"
         dump_all /tmp/dump1
     else
         wal-g --config=${TMP_CONFIG} backup-push ${PGDATA}

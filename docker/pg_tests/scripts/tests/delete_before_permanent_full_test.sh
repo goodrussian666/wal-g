@@ -15,12 +15,13 @@ pg_ctl -D ${PGDATA} -w start
 
 wal-g --config=${TMP_CONFIG} delete everything FORCE --confirm
 
-# push first backup as permanent
+# Mark a completed backup permanent, then verify retention preserves it.
 pgbench -i -s 1 postgres &
 sleep 1
-wal-g --config=${TMP_CONFIG} backup-push --permanent ${PGDATA}
+wal-g --config=${TMP_CONFIG} backup-push ${PGDATA}
 wal-g --config=${TMP_CONFIG} backup-list
 permanent_backup_name=`wal-g --config=${TMP_CONFIG} backup-list | tail -n 1 | cut -f 1 -d " "`
+wal-g --config=${TMP_CONFIG} backup-mark "$permanent_backup_name"
 
 # push a few more impermanent backups
 for _ in 2 3 4
